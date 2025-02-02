@@ -8,22 +8,9 @@ import { USDC, erc20 } from '@goat-sdk/plugin-erc20';
 import { sendETH } from '@goat-sdk/wallet-evm';
 import { modespray } from '@goat-sdk/plugin-modespray';
 import { viem } from '@goat-sdk/wallet-viem';
+import { createMarketTool } from './tools/prediction-market';
+import { getWalletClient } from '@/lib/services/wallet';
 
-// Define Mode testnet if not in viem/chains
-// const modeTestnet = {
-//   id: 919,
-//   name: 'Mode Testnet',
-//   network: 'mode-testnet',
-//   nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-//   rpcUrls: {
-//     default: {
-//       http: ['https://sepolia.mode.network'],
-//     },
-//     public: {
-//       http: ['https://sepolia.mode.network'],
-//     },
-//   },
-// } as const;
 
 export const initializeWeb3Tools = async () => {
   const account = privateKeyToAccount(
@@ -31,11 +18,12 @@ export const initializeWeb3Tools = async () => {
   );
   console.log('Account:', account.address);
 
-  const walletClient = createWalletClient({
-    account,
-    transport: http(process.env.MODE_RPC_URL || 'https://sepolia.mode.network'),
-    chain: modeTestnet,
-  });
+  // const walletClient = createWalletClient({
+  //   account,
+  //   transport: http(process.env.MODE_RPC_URL || 'https://sepolia.mode.network'),
+  //   chain: modeTestnet,
+  // });
+  const walletClient = getWalletClient();
 
   console.log('Wallet client created');
 
@@ -63,7 +51,10 @@ export const initializeWeb3Tools = async () => {
     });
     console.log('Web3 tools initialized:', Object.keys(tools));
 
-    return tools;
+    return {
+      ...tools,
+      createMarket: createMarketTool
+    };
   } catch (error) {
     console.error('Error initializing web3 tools:', error);
     throw error;
