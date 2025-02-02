@@ -11,7 +11,7 @@
 //   }),
 //   execute: async ({ action, marketId }) => {
 //     const goat = initializeGoat();
-    
+
 //     switch (action) {
 //       case 'analyze':
 //         return await goat.analyze(marketId);

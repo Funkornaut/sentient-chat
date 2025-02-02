@@ -35,6 +35,9 @@ importers:
       '@goat-sdk/plugin-erc20':
         specifier: ^0.2.9
         version: 0.2.9(@goat-sdk/core@0.4.6(zod@3.23.8))(bufferutil@4.0.8)(typescript@5.6.3)(viem@2.22.17(bufferutil@4.0.8)(typescript@5.6.3)(zod@3.23.8))
+      '@goat-sdk/plugin-modespray':
+        specifier: ^0.1.4
+        version: 0.1.4(@goat-sdk/core@0.4.6(zod@3.23.8))(bufferutil@4.0.8)(typescript@5.6.3)(viem@2.22.17(bufferutil@4.0.8)(typescript@5.6.3)(zod@3.23.8))
       '@goat-sdk/wallet-evm':
         specifier: ^0.2.7
         version: 0.2.7(@goat-sdk/core@0.4.6(zod@3.23.8))(bufferutil@4.0.8)(typescript@5.6.3)
@@ -899,6 +902,12 @@ packages:
 
   '@goat-sdk/plugin-erc20@0.2.9':
     resolution: {integrity: sha512-lUhCDn55wqccq82HKd2CKlYx33Cz3hWYkevwAdgTLD78Bk9gCURw11f+02YKYyYPFaxN17bC0UPrJ51DNitAAw==}
+    peerDependencies:
+      '@goat-sdk/core': 0.4.6
+      viem: 2.21.49
+
+  '@goat-sdk/plugin-modespray@0.1.4':
+    resolution: {integrity: sha512-5WeDFM3HCEiloWpin9XFdZbU5Og1c71n2QMCueYK9j5iPGh8dgpwqbo4fprSajE4AMZsmpDA9LZn1PBW5AGiow==}
     peerDependencies:
       '@goat-sdk/core': 0.4.6
       viem: 2.21.49
@@ -4352,6 +4361,17 @@ snapshots:
       zod: 3.23.8
 
   '@goat-sdk/plugin-erc20@0.2.9(@goat-sdk/core@0.4.6(zod@3.23.8))(bufferutil@4.0.8)(typescript@5.6.3)(viem@2.22.17(bufferutil@4.0.8)(typescript@5.6.3)(zod@3.23.8))':
+    dependencies:
+      '@goat-sdk/core': 0.4.6(zod@3.23.8)
+      '@goat-sdk/wallet-evm': 0.2.7(@goat-sdk/core@0.4.6(zod@3.23.8))(bufferutil@4.0.8)(typescript@5.6.3)
+      viem: 2.22.17(bufferutil@4.0.8)(typescript@5.6.3)(zod@3.23.8)
+      zod: 3.23.8
+    transitivePeerDependencies:
+      - bufferutil
+      - typescript
+      - utf-8-validate
+
+  '@goat-sdk/plugin-modespray@0.1.4(@goat-sdk/core@0.4.6(zod@3.23.8))(bufferutil@4.0.8)(typescript@5.6.3)(viem@2.22.17(bufferutil@4.0.8)(typescript@5.6.3)(zod@3.23.8))':
     dependencies:
       '@goat-sdk/core': 0.4.6(zod@3.23.8)
       '@goat-sdk/wallet-evm': 0.2.7(@goat-sdk/core@0.4.6(zod@3.23.8))(bufferutil@4.0.8)(typescript@5.6.3)

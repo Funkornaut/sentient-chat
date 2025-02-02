@@ -1,12 +1,13 @@
-import { http } from "viem";
-import { createWalletClient } from "viem";
-import { privateKeyToAccount } from "viem/accounts";
-import { modeTestnet } from "viem/chains"; // Note: If mode isn't in viem chains, we'll define it
+import { http } from 'viem';
+import { createWalletClient } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
+import { modeTestnet } from 'viem/chains'; // Note: If mode isn't in viem chains, we'll define it
 
-import { getOnChainTools } from "@goat-sdk/adapter-vercel-ai";
-import { USDC, erc20 } from "@goat-sdk/plugin-erc20";
-import { sendETH } from "@goat-sdk/wallet-evm";
-import { viem } from "@goat-sdk/wallet-viem";
+import { getOnChainTools } from '@goat-sdk/adapter-vercel-ai';
+import { USDC, erc20 } from '@goat-sdk/plugin-erc20';
+import { sendETH } from '@goat-sdk/wallet-evm';
+import { modespray } from '@goat-sdk/plugin-modespray';
+import { viem } from '@goat-sdk/wallet-viem';
 
 // Define Mode testnet if not in viem/chains
 // const modeTestnet = {
@@ -25,8 +26,10 @@ import { viem } from "@goat-sdk/wallet-viem";
 // } as const;
 
 export const initializeWeb3Tools = async () => {
-  const account = privateKeyToAccount(process.env.WALLET_PRIVATE_KEY as `0x${string}`);
-  console.log("Account:", account.address);
+  const account = privateKeyToAccount(
+    process.env.WALLET_PRIVATE_KEY as `0x${string}`,
+  );
+  console.log('Account:', account.address);
 
   const walletClient = createWalletClient({
     account,
@@ -34,17 +37,17 @@ export const initializeWeb3Tools = async () => {
     chain: modeTestnet,
   });
 
-  console.log("Wallet client created");
+  console.log('Wallet client created');
 
   // return await getOnChainTools({
   //   wallet: viem(walletClient),
   //   plugins: [
   //     sendETH(),
-  //     erc20({ 
+  //     erc20({
   //       tokens: [
   //         // Add Mode testnet token addresses here
   //         // Example: { ...USDC, address: "0x..." }
-  //       ] 
+  //       ]
   //     }),
   //   ],
   // });
@@ -55,13 +58,19 @@ export const initializeWeb3Tools = async () => {
       plugins: [
         sendETH(),
         erc20({ tokens: [] }),
+        modespray({
+          // Add validation for addresses
+          validateAddress: (address: string) => {
+            return address.startsWith('0x') && address.length === 42;
+          },
+        }),
       ],
     });
-    console.log("Web3 tools initialized:", Object.keys(tools));
-    
+    console.log('Web3 tools initialized:', Object.keys(tools));
+
     return tools;
   } catch (error) {
-    console.error("Error initializing web3 tools:", error);
+    console.error('Error initializing web3 tools:', error);
     throw error;
   }
 };

@@ -22,8 +22,6 @@ import { useBlockSelector } from '@/hooks/use-block';
 // It fetches votes related to the chat from an API and manages attachments for messages.
 // The component is designed to be responsive and user-friendly, providing a seamless chat experience.
 
-
-
 export function Chat({
   id,
   initialMessages,

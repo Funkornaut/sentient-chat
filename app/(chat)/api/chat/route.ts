@@ -30,7 +30,6 @@ import { getWeather } from '@/lib/ai/tools/get-weather';
 //import { predictionMarketTool } from '@/lib/ai/tools/prediction-market';
 import { initializeWeb3Tools } from '@/lib/ai/web3-tools';
 
-
 export const maxDuration = 60;
 // Initialize web3 tools
 const web3Tools = await initializeWeb3Tools();
@@ -54,7 +53,7 @@ const web3ToolNames = Object.keys(web3Tools) as AllowedTools[];
 const allTools: AllowedTools[] = [
   ...blocksTools,
   ...weatherTools,
-  ...web3ToolNames
+  ...web3ToolNames,
 ];
 
 export async function POST(request: Request) {
@@ -89,7 +88,7 @@ export async function POST(request: Request) {
     const title = await generateTitleFromUserMessage({ message: userMessage });
     await saveChat({ id, userId: session.user.id, title });
   }
-
+  // user message saved here
   await saveMessages({
     messages: [{ ...userMessage, createdAt: new Date(), chatId: id }],
   });
@@ -124,22 +123,32 @@ export async function POST(request: Request) {
             try {
               const responseMessagesWithoutIncompleteToolCalls =
                 sanitizeResponseMessages(response.messages);
+              // log message content
+              console.log(
+                'Messages to save:',
+                responseMessagesWithoutIncompleteToolCalls,
+              );
 
-              await saveMessages({
-                messages: responseMessagesWithoutIncompleteToolCalls.map(
-                  (message) => {
-                    return {
-                      id: message.id,
-                      chatId: id,
-                      role: message.role,
-                      content: message.content,
-                      createdAt: new Date(),
-                    };
-                  },
-                ),
-              });
+              // bot response saved here
+              // Only save non-empty messages
+              const validMessages =
+                responseMessagesWithoutIncompleteToolCalls.filter(
+                  (message) => message.content && message.content.trim() !== '',
+                );
+
+              if (validMessages.length > 0) {
+                await saveMessages({
+                  messages: validMessages.map((message) => ({
+                    id: message.id,
+                    chatId: id,
+                    role: message.role,
+                    content: message.content,
+                    createdAt: new Date(),
+                  })),
+                });
+              }
             } catch (error) {
-              console.error('Failed to save chat');
+              console.error('Failed to save chat', error);
             }
           }
         },
