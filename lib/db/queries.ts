@@ -108,7 +108,10 @@ export async function saveMessages({ messages }: { messages: Array<Message> }) {
   try {
     // Validate messages before saving
     const validMessages = messages.filter(
-      (message) => message.content && message.content.trim() !== '',
+      (message) => {
+        const content = message.content;
+        return typeof content === 'string' && content.trim() !== '';
+      }
     );
     // if no valid messages, return
     if (validMessages.length === 0) {

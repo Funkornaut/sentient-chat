@@ -58,12 +58,7 @@ export const initializeWeb3Tools = async () => {
       plugins: [
         sendETH(),
         erc20({ tokens: [] }),
-        modespray({
-          // Add validation for addresses
-          validateAddress: (address: string) => {
-            return address.startsWith('0x') && address.length === 42;
-          },
-        }),
+        modespray(),
       ],
     });
     console.log('Web3 tools initialized:', Object.keys(tools));

@@ -133,7 +133,10 @@ export async function POST(request: Request) {
               // Only save non-empty messages
               const validMessages =
                 responseMessagesWithoutIncompleteToolCalls.filter(
-                  (message) => message.content && message.content.trim() !== '',
+                  (message) => {
+                    const content = message.content;
+                    return typeof content === 'string' && content.trim() !== '';
+                  }
                 );
 
               if (validMessages.length > 0) {
