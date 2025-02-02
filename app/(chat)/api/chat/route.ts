@@ -27,13 +27,19 @@ import { updateDocument } from '@/lib/ai/tools/update-document';
 import { requestSuggestions } from '@/lib/ai/tools/request-suggestions';
 import { getWeather } from '@/lib/ai/tools/get-weather';
 
+//import { predictionMarketTool } from '@/lib/ai/tools/prediction-market';
+import { initializeWeb3Tools } from '@/lib/ai/web3-tools';
+
 export const maxDuration = 60;
+// Initialize web3 tools
+const web3Tools = await initializeWeb3Tools();
 
 type AllowedTools =
   | 'createDocument'
   | 'updateDocument'
   | 'requestSuggestions'
-  | 'getWeather';
+  | 'getWeather'
+  | (string & {}); // This allows any string while maintaining type safety
 
 const blocksTools: AllowedTools[] = [
   'createDocument',
@@ -42,7 +48,13 @@ const blocksTools: AllowedTools[] = [
 ];
 
 const weatherTools: AllowedTools[] = ['getWeather'];
-const allTools: AllowedTools[] = [...blocksTools, ...weatherTools];
+const web3ToolNames = Object.keys(web3Tools) as AllowedTools[];
+
+const allTools: AllowedTools[] = [
+  ...blocksTools,
+  ...weatherTools,
+  ...web3ToolNames,
+];
 
 export async function POST(request: Request) {
   const {
@@ -76,7 +88,7 @@ export async function POST(request: Request) {
     const title = await generateTitleFromUserMessage({ message: userMessage });
     await saveChat({ id, userId: session.user.id, title });
   }
-
+  // user message saved here
   await saveMessages({
     messages: [{ ...userMessage, createdAt: new Date(), chatId: id }],
   });
@@ -87,11 +99,12 @@ export async function POST(request: Request) {
         model: customModel(model.apiIdentifier),
         system: systemPrompt,
         messages,
-        maxSteps: 5,
-        experimental_activeTools: allTools,
+        maxSteps: 10,
+        //experimental_activeTools: allTools,
         experimental_transform: smoothStream({ chunking: 'word' }),
         experimental_generateMessageId: generateUUID,
         tools: {
+          ...web3Tools,
           getWeather,
           createDocument: createDocument({ session, dataStream, model }),
           updateDocument: updateDocument({ session, dataStream, model }),
@@ -100,28 +113,45 @@ export async function POST(request: Request) {
             dataStream,
             model,
           }),
+          //predictionMarket: predictionMarketTool,
+        },
+        onStepFinish: (event) => {
+          console.log('Tool Results:', event.toolResults);
         },
         onFinish: async ({ response }) => {
           if (session.user?.id) {
             try {
               const responseMessagesWithoutIncompleteToolCalls =
                 sanitizeResponseMessages(response.messages);
+              // log message content
+              console.log(
+                'Messages to save:',
+                responseMessagesWithoutIncompleteToolCalls,
+              );
 
-              await saveMessages({
-                messages: responseMessagesWithoutIncompleteToolCalls.map(
+              // bot response saved here
+              // Only save non-empty messages
+              const validMessages =
+                responseMessagesWithoutIncompleteToolCalls.filter(
                   (message) => {
-                    return {
-                      id: message.id,
-                      chatId: id,
-                      role: message.role,
-                      content: message.content,
-                      createdAt: new Date(),
-                    };
-                  },
-                ),
-              });
+                    const content = message.content;
+                    return typeof content === 'string' && content.trim() !== '';
+                  }
+                );
+
+              if (validMessages.length > 0) {
+                await saveMessages({
+                  messages: validMessages.map((message) => ({
+                    id: message.id,
+                    chatId: id,
+                    role: message.role,
+                    content: message.content,
+                    createdAt: new Date(),
+                  })),
+                });
+              }
             } catch (error) {
-              console.error('Failed to save chat');
+              console.error('Failed to save chat', error);
             }
           }
         },

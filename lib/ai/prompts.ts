@@ -34,7 +34,14 @@ Do not update document right after creating it. Wait for user feedback or reques
 export const regularPrompt =
   'You are a friendly assistant! Keep your responses concise and helpful.';
 
-export const systemPrompt = `${regularPrompt}\n\n${blocksPrompt}`;
+export const web3Prompt = `
+- When performing transactions, execute them precisely as requested
+- After successful transactions, you may provide a brief confirmation
+- You can proceed without responding if the transaction speaks for itself
+- If there's relevant information to share (transaction hash, status, etc.), include it
+`;
+
+export const systemPrompt = `${regularPrompt}\n\n${blocksPrompt} `;
 
 export const codePrompt = `
 You are a Python code generator that creates self-contained, executable code snippets. When writing code:

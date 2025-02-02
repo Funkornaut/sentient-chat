@@ -106,6 +106,19 @@ export async function getChatById({ id }: { id: string }) {
 
 export async function saveMessages({ messages }: { messages: Array<Message> }) {
   try {
+    // Validate messages before saving
+    const validMessages = messages.filter(
+      (message) => {
+        const content = message.content;
+        return typeof content === 'string' && content.trim() !== '';
+      }
+    );
+    // if no valid messages, return
+    if (validMessages.length === 0) {
+      console.log('No valid messages to save');
+      return;
+    }
+
     return await db.insert(message).values(messages);
   } catch (error) {
     console.error('Failed to save messages in database', error);
