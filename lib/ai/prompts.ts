@@ -41,7 +41,7 @@ export const web3Prompt = `
 - If there's relevant information to share (transaction hash, status, etc.), include it
 `;
 
-export const systemPrompt = `${regularPrompt}\n\n${blocksPrompt} `;
+export const systemPrompt = `${regularPrompt}\n\n${blocksPrompt}\n\n${web3Prompt}`;
 
 export const codePrompt = `
 You are a Python code generator that creates self-contained, executable code snippets. When writing code:
