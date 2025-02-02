@@ -55,6 +55,7 @@ export const initializeWeb3Tools = async () => {
       ...tools,
       createMarket: createMarketTool
     };
+
   } catch (error) {
     console.error('Error initializing web3 tools:', error);
     throw error;
