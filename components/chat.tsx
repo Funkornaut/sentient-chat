@@ -14,6 +14,15 @@ import { MultimodalInput } from './multimodal-input';
 import { Messages } from './messages';
 import { VisibilityType } from './visibility-selector';
 import { useBlockSelector } from '@/hooks/use-block';
+// This component is a chat interface built using React and Next.js.
+// It utilizes the 'ai' library for chat functionalities and state management.
+// The component imports necessary types and hooks for handling messages, attachments, and user interactions.
+// It also imports various UI components such as ChatHeader, Block, MultimodalInput, and Messages for rendering the chat interface.
+// The Chat function manages the chat state, including messages, input, and loading states, and handles message submission.
+// It fetches votes related to the chat from an API and manages attachments for messages.
+// The component is designed to be responsive and user-friendly, providing a seamless chat experience.
+
+
 
 export function Chat({
   id,

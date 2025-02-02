@@ -27,13 +27,20 @@ import { updateDocument } from '@/lib/ai/tools/update-document';
 import { requestSuggestions } from '@/lib/ai/tools/request-suggestions';
 import { getWeather } from '@/lib/ai/tools/get-weather';
 
+//import { predictionMarketTool } from '@/lib/ai/tools/prediction-market';
+import { initializeWeb3Tools } from '@/lib/ai/web3-tools';
+
+
 export const maxDuration = 60;
+// Initialize web3 tools
+const web3Tools = await initializeWeb3Tools();
 
 type AllowedTools =
   | 'createDocument'
   | 'updateDocument'
   | 'requestSuggestions'
-  | 'getWeather';
+  | 'getWeather'
+  | (string & {}); // This allows any string while maintaining type safety
 
 const blocksTools: AllowedTools[] = [
   'createDocument',
@@ -42,7 +49,13 @@ const blocksTools: AllowedTools[] = [
 ];
 
 const weatherTools: AllowedTools[] = ['getWeather'];
-const allTools: AllowedTools[] = [...blocksTools, ...weatherTools];
+const web3ToolNames = Object.keys(web3Tools) as AllowedTools[];
+
+const allTools: AllowedTools[] = [
+  ...blocksTools,
+  ...weatherTools,
+  ...web3ToolNames
+];
 
 export async function POST(request: Request) {
   const {
@@ -87,11 +100,12 @@ export async function POST(request: Request) {
         model: customModel(model.apiIdentifier),
         system: systemPrompt,
         messages,
-        maxSteps: 5,
-        experimental_activeTools: allTools,
+        maxSteps: 10,
+        //experimental_activeTools: allTools,
         experimental_transform: smoothStream({ chunking: 'word' }),
         experimental_generateMessageId: generateUUID,
         tools: {
+          ...web3Tools,
           getWeather,
           createDocument: createDocument({ session, dataStream, model }),
           updateDocument: updateDocument({ session, dataStream, model }),
@@ -100,6 +114,10 @@ export async function POST(request: Request) {
             dataStream,
             model,
           }),
+          //predictionMarket: predictionMarketTool,
+        },
+        onStepFinish: (event) => {
+          console.log('Tool Results:', event.toolResults);
         },
         onFinish: async ({ response }) => {
           if (session.user?.id) {
