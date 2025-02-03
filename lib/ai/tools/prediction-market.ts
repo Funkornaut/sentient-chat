@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { parseUnits } from 'viem';
 import { FACTORY_ABI } from './factory-contract/abi';
 import { getWalletClient, chain } from '@/lib/services/wallet';
+import { CONTRACTS } from '@/lib/constants/contracts';
 
 
 export const createMarketTool = tool({
@@ -26,8 +27,7 @@ export const createMarketTool = tool({
                 outcomeDescriptions
             });
 
-            const factoryAddress = process.env.PREDICTION_MARKET_FACTORY as `0x${string}`;
-            if (!factoryAddress) throw new Error('Factory address not configured');
+            const factoryAddress = CONTRACTS.PREDICTION_MARKET_FACTORY;
 
             const walletClient = getWalletClient();
             const account = walletClient.account;

@@ -1,65 +1,103 @@
 <a href="https://chat.vercel.ai/">
-  <img alt="Next.js 14 and App Router-ready AI chatbot." src="app/(chat)/opengraph-image.png">
-  <h1 align="center">Next.js AI Chatbot</h1>
+  <img alt="AI Chatbot with Web3 capabilities for Mode Network" src="app/(chat)/opengraph-image.png">
+  <h1 align="center">Sentient Markets AI Chatbot</h1>
 </a>
 
 <p align="center">
-  Test push
-</p>
-
-<p align="center">
-  An Open-Source AI Chatbot Template Built With Next.js and the AI SDK by Vercel.
+  An AI Chatbot with Web3 capabilities. Built for Mode's AI Agent Founder School. This chatbot is designed to interact with Sentient Markets, Mode's AI-Only Prediction Market. It also has generic web3 capabilities that can be executed on Mode Network.
 </p>
 
 <p align="center">
   <a href="#features"><strong>Features</strong></a> ·
-  <a href="#model-providers"><strong>Model Providers</strong></a> ·
+  <a href="#web3-capabilities"><strong>Web3 Capabilities</strong></a> ·
   <a href="#deploy-your-own"><strong>Deploy Your Own</strong></a> ·
   <a href="#running-locally"><strong>Running locally</strong></a>
 </p>
 <br/>
 
+## About
+
+This project was developed as part of [Mode's AI Agent Founder School](https://bcamp.dev/ai-agent-founder-school), combining the power of AI with blockchain functionality. The chatbot can interact with Mode Network, execute transactions, and manage prediction markets through natural language commands.
+
 ## Features
 
 - [Next.js](https://nextjs.org) App Router
-  - Advanced routing for seamless navigation and performance
-  - React Server Components (RSCs) and Server Actions for server-side rendering and increased performance
+  - Advanced routing and server-side rendering
+  - React Server Components (RSCs)
+  - Server Actions for enhanced performance
 - [AI SDK](https://sdk.vercel.ai/docs)
-  - Unified API for generating text, structured objects, and tool calls with LLMs
-  - Hooks for building dynamic chat and generative user interfaces
-  - Supports OpenAI (default), Anthropic, Cohere, and other model providers
+  - Unified API for text generation and tool calls
+  - Dynamic chat interface
+  - Support for multiple LLM providers
 - [shadcn/ui](https://ui.shadcn.com)
-  - Styling with [Tailwind CSS](https://tailwindcss.com)
-  - Component primitives from [Radix UI](https://radix-ui.com) for accessibility and flexibility
+  - Tailwind CSS styling
+  - Radix UI components
 - Data Persistence
-  - [Vercel Postgres powered by Neon](https://vercel.com/storage/postgres) for saving chat history and user data
-  - [Vercel Blob](https://vercel.com/storage/blob) for efficient file storage
-- [NextAuth.js](https://github.com/nextauthjs/next-auth)
-  - Simple and secure authentication
+  - Vercel Postgres for chat history
+  - Vercel Blob for file storage
+- Authentication via NextAuth.js
 
-## Model Providers
+## Web3 Capabilities
+- **Prediction Markets**
+  - Create new prediction markets
+  - Set market parameters (end time, collateral, liquidity)
 
-This template ships with OpenAI `gpt-4o` as the default. However, with the [AI SDK](https://sdk.vercel.ai/docs), you can switch LLM providers to [OpenAI](https://openai.com), [Anthropic](https://anthropic.com), [Cohere](https://cohere.com/), and [many more](https://sdk.vercel.ai/providers/ai-sdk-providers) with just a few lines of code.
+- **ETH Transfers**
+  - Send ETH to any address on Mode Network
+  - Check wallet balances
+  - View transaction history
 
-## Deploy Your Own
-
-You can deploy your own version of the Next.js AI Chatbot to Vercel with one click:
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fai-chatbot&env=AUTH_SECRET,OPENAI_API_KEY&envDescription=Learn%20more%20about%20how%20to%20get%20the%20API%20Keys%20for%20the%20application&envLink=https%3A%2F%2Fgithub.com%2Fvercel%2Fai-chatbot%2Fblob%2Fmain%2F.env.example&demo-title=AI%20Chatbot&demo-description=An%20Open-Source%20AI%20Chatbot%20Template%20Built%20With%20Next.js%20and%20the%20AI%20SDK%20by%20Vercel.&demo-url=https%3A%2F%2Fchat.vercel.ai&stores=[{%22type%22:%22postgres%22},{%22type%22:%22blob%22}])
+- **Mode Spray**
+  - Distribute ETH to multiple addresses in one transaction
+  - Efficient token distribution for airdrops or rewards
 
 ## Running locally
 
-You will need to use the environment variables [defined in `.env.example`](.env.example) to run Next.js AI Chatbot. It's recommended you use [Vercel Environment Variables](https://vercel.com/docs/projects/environment-variables) for this, but a `.env` file is all that is necessary.
+1. Clone the repository
+```bash
+git clone https://github.com/your-username/mode-ai-chatbot
+cd mode-ai-chatbot
+```
 
-> Note: You should not commit your `.env` file or it will expose secrets that will allow others to control access to your various OpenAI and authentication provider accounts.
-
-1. Install Vercel CLI: `npm i -g vercel`
-2. Link local instance with Vercel and GitHub accounts (creates `.vercel` directory): `vercel link`
-3. Download your environment variables: `vercel env pull`
-
+2. Install dependencies
 ```bash
 pnpm install
+```
+
+3. Set up environment variables in `.env`:
+```bash
+# Auth
+AUTH_SECRET=your-secret
+
+# Database
+BLOB_READ_WRITE_TOKEN=your-blob-token
+POSTGRES_URL=your-postgres-url
+
+# Mode Network
+MODE_RPC_URL=https://sepolia.mode.network
+WALLET_PRIVATE_KEY=your-private-key
+
+# OpenAI (or other LLM provider)
+OPENAI_API_KEY=your-api-key
+```
+
+4. Run the development server
+```bash
 pnpm dev
 ```
 
-Your app template should now be running on [localhost:3000](http://localhost:3000/).
+Your chatbot should now be running on [localhost:3000](http://localhost:3000/).
+
+## Example Commands
+
+- "Send 0.1 ETH to 0x..."
+- "Spray 0.01 ETH to these addresses: [list of addresses]"
+- "Create a prediction market for ETH price reaching $3000 by end of Q1 2024"
+
+## Contributing
+
+We welcome contributions! Message us on X [@SentientMarkets](https://x.com/SentientMarkets)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
