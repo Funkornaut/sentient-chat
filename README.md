@@ -1,5 +1,5 @@
-<a href="https://chat.vercel.ai/">
-  <img alt="AI Chatbot with Web3 capabilities for Mode Network" src="app/(chat)/opengraph-image.png">
+<a href="https://sentient-chat.vercel.app/">
+  <img alt="AI Chatbot with Web3 capabilities for Mode Network" src="sentient.jpeg">
   <h1 align="center">Sentient Markets AI Chatbot</h1>
 </a>
 

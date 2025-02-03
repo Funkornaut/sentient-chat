@@ -6,9 +6,14 @@ import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://chat.vercel.ai'),
-  title: 'Next.js Chatbot Template',
-  description: 'Next.js chatbot template using the AI SDK.',
+  metadataBase: new URL('https://sentient-chat.vercel.app/'),
+  title: 'Sentient Markets AI Chatbot',
+  description: 'AI Chatbot with Web3 capabilities for Mode Network and Sentient Markets.',
+  openGraph: {
+    title: 'Sentient Markets AI Chatbot',
+    description: 'AI Chatbot with Web3 capabilities for Mode Network and Sentient Markets.',
+    images: ['/sentient.jpeg'],
+  },
 };
 
 export const viewport = {
